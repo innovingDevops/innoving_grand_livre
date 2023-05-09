@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <report
+            id="action_innoving_partner_ledger"
+            model="innoving.account.partner.ledger"
+            string="Innoving partner ledger"
+            report_type="qweb-pdf"
+            name="innoving_ledger.innoving_report_partner_ledger"
+            file="innoving_ledger.innoving_report_partner_ledger"
+            />
+            
+       <report
+            id="action_innoving_account_ledger"
+            model="innoving.account.ledger"
+            string="Innoving account ledger"
+            report_type="qweb-pdf"
+            name="innoving_ledger.innoving_report_account_ledger"
+            file="innoving_ledger.innoving_report_account_ledger"
+            />
+    </data>
+</odoo>

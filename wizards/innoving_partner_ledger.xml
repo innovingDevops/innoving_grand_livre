@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="account_innoving_report_partner_ledger_view" model="ir.ui.view">
+        <field name="name">Innoving Partner Ledger</field>
+        <field name="model">innoving.account.partner.ledger</field>
+        <field name="arch" type="xml">
+            <form>
+				<sheet>
+					<group>
+                        <group>
+                            <field name="partner_id" required="1" options="{'no_create': True, 'no_open': True}"/>
+							<field name="selon" required="1" widget='radio' options="{'horizontal':true}"/>
+                            <field name="periode_id" attrs="{'invisible':[('selon','==','Date')]}" options="{'no_create': True, 'no_open': True}"/>
+						</group>
+						<group>
+							<field name="date_from" required="1"/>
+							<field name="date_to" required="1"/>
+						</group>
+					</group>
+                    <group>
+                        <field name="journal_ids" widget="many2many_tags" options="{'no_create': True, 'no_open': True}"/>
+                    </group>
+					<footer>
+						<button name="print_report" string="Imprimer" type="object"	class="oe_highlight" />
+						ou
+						<button string="Annuler" class="oe_link" special="cancel" />
+					</footer>
+				</sheet>
+			</form>
+        </field>
+    </record>
+
+    <record id="action_innoving_account_partner_ledger_menu" model="ir.actions.act_window">
+        <field name="name">Innoving Partner Ledger</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">innoving.account.partner.ledger</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="account_innoving_report_partner_ledger_view"/>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="account.model_account_account" />
+        <field name="binding_type">report</field>
+    </record>
+
+    <menuitem
+        id="menu_innoving_partner_ledger"
+        name="Grand livre des partenaires"
+        sequence="2"
+        parent="accounting_pdf_reports.menu_finance_legal_statement"
+        action="action_innoving_account_partner_ledger_menu"
+        groups="account.group_account_user"
+       />
+
+</odoo>
+

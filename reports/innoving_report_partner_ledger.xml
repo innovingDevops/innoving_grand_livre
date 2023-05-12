@@ -1,97 +1,96 @@
 <?xml version="1.0"?>
 <odoo>
-	<template id="innoving_report_partner_ledger">
-		<t t-call="web.html_container">
-            <t t-set="data_report_margin_top" t-value="12"/>
-            <t t-set="data_report_header_spacing" t-value="9"/>
-            <t t-set="data_report_dpi" t-value="110"/>
-            <t t-call="web.internal_layout">
-                <div class="page">
-                    <h2>Partner Ledger</h2>
-                    <div class="row">
-                        <div class="col-3">
-                            <strong>Company: VICTOIRE IMMOBILIER</strong>
-                            
-                        </div>
-                        <div class="col-3">
-                            <strong>Date from :</strong> <span t-esc="form_data['date_from']" t-options='{"widget": "date","format": "dd-MM-yyyy"}'/> <br/>
-                            <strong>Date to :</strong> <span t-esc="form_data['date_to']" t-options='{"widget": "date","format": "dd-MM-yyyy"}'/>
-                        </div>
-                    </div>
-
-                    <table class="table table-sm table-reports">
-                        <thead>
-                            <tr>
-                                <th>Date</th>
-                                <th>JRNL</th>
-                                <th>Account</th>
-                                <th>Ref</th>
-                                <th>Debit</th>
-                                <th>Credit</th>
-                                <th>Balance</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!--
-                            <tr>
-                                <td colspan="4">
-                                    <strong t-esc="o.ref"/>
-                                    - <strong t-esc="o.name"/>
-                                </td>
-                                <td class="text-right">
-                                    <strong t-esc="sum_partner(data, o, 'debit')" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
-                                </td>
-                                <td class="text-right">
-                                    <strong t-esc="sum_partner(data, o, 'credit')" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
-                                </td>
-                                <td class="text-right">
-                                    <strong t-esc="sum_partner(data, o, 'debit - credit')" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
-                                </td>
-                            </tr>
-                            -->
-                            <tr>
-                                <td colspan="4">
-                                    - <strong t-esc="form_data['partner_id'][1]"/>
-                                </td>
-                                <td class="text-right" style="text-align:center;">
-                                    <span t-esc="form_data['somme_debit']" t-options='{"widget": "float", "precision": 0}'/>
-                                </td>
-                                <td class="text-right" style="text-align:center;">
-                                    <span t-esc="form_data['somme_credit']" t-options='{"widget": "float", "precision": 0}'/>
-                                </td>
-                                <td class="text-right" style="text-align:center;">
-                                    <span t-esc="form_data['somme_balance']" t-options='{"widget": "float", "precision": 0}'/>
-                                </td>
-                            </tr>
-                            <t t-foreach="payslips" t-as="line">
-                                <tr>
-                                    <td>
-                                        <span t-esc="line['date']" t-options='{"widget": "date","format": "dd-MM-yyyy"}'/>
-                                    </td>
-                                    <td>
-                                        <span t-esc="line['journal']"/>
-                                    </td>
-                                    <td>
-                                        <span t-esc="line['account']"/>
-                                    </td>
-                                    <td>
-                                        <span t-esc="line['ref']"/>
-                                    </td>
-                                    <td class="text-right">
-                                        <span t-esc="line['debit']" t-options='{"widget": "float", "precision": 0}'/>
-                                    </td>
-                                    <td class="text-right">
-                                        <span t-esc="line['credit']" t-options='{"widget": "float", "precision": 0}'/>
-                                    </td>
-                                    <td class="text-right">
-                                        <span t-esc="line['balance']" t-options='{"widget": "float", "precision": 0}'/>
-                                    </td>
-                                </tr>
-                            </t>
-                        </tbody>
-                    </table>
-                </div>
-            </t>
+	<template id="innoving_report_partner_ledger_p">
+		<t t-name="innoving_grand_livre.innoving_report_partner_ledger">
+			<t t-call="web.html_container">
+			<t t-call="web.basic_layout">
+				<div class="page" style="font-family:Century Gothic !important;">
+					<div class="oe_structure" />
+					<div class="container">
+						<div class="row">
+							 <table class="table table-borderless" style="font-family:Century Gothic !important;font-size:15px;">
+								<tbody>
+									<tr>
+										<td style="text-align:center;">
+											<strong>VICTOIRE IMMOBILIER</strong>
+										</td>
+										<td style="text-align:center;">
+											<strong><h4>GRAND LIVRE DES PARTENAIRES</h4></strong>
+										</td>
+										<td style="text-align:center;">
+											Période du <span t-esc="form_data['date_from']" t-options='{"widget": "date","format": "dd-MM-yyyy"}'/> 
+											Au <span t-esc="form_data['date_to']" t-options='{"widget": "date","format": "dd-MM-yyyy"}'/>
+										</td>
+									</tr>
+									<tr>
+										<td style="text-align:center;">
+											<strong>Date tirage</strong> : <span t-esc="time.strftime('%d-%m-%Y %H:%M:%S')" />
+										</td>
+										<td style="text-align:center;">
+											<strong>Partenaire : <span t-esc="form_data['partner_name']"/></strong>
+										</td>
+										<td style="text-align:center;">
+											<strong>Page</strong> :
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						
+						<div class="row">
+							 <table class="table table-borderless" style="font-family:Century Gothic !important;font-size:14px;">
+								<thead>
+		                            <tr>
+		                                <th scope="col" style="text-align:center;border: 1px solid black;">Date</th>
+		                                <th scope="col" style="text-align:center;border: 1px solid black;">C.J</th>
+		                                <th scope="col" style="text-align:center;border: 1px solid black;">N° Piéce</th>
+		                                <th scope="col" style="text-align:center;border: 1px solid black;">Libellé</th>
+		                                <th scope="col" style="text-align:center;border: 1px solid black;">Débit</th>
+		                                <th scope="col" style="text-align:center;border: 1px solid black;">Crédit</th>
+		                                <th scope="col" style="text-align:center;border: 1px solid black;">Solde progressif</th>
+		                            </tr>
+		                        </thead>
+								<tbody>
+									<t t-foreach="payslips" t-as="line">
+		                               <tr>
+		                                    <td style="border: 1px solid black;">
+		                                        <span t-esc="line['date']" t-options='{"widget": "date","format": "dd-MM-yyyy"}'/>
+		                                    </td>
+		                                    <td style="border: 1px solid black;">
+		                                        <span t-esc="line['journal']"/>
+		                                    </td>
+		                                    <td style="border: 1px solid black;">
+		                                        <span t-esc="line['piece']"/>
+		                                    </td>
+		                                    <td style="border: 1px solid black;">
+		                                        <span t-esc="line['name']"/>
+		                                    </td>
+		                                    
+		                                    <td class="text-right" style="border: 1px solid black;">
+		                                    	<t t-if="line['debit'] != 0">
+		                                        	<span t-esc="line['debit']" t-options='{"widget": "float", "precision": 0}'/>
+		                                    	</t>
+		                                    </td>
+		                                    <td class="text-right" style="border: 1px solid black;">
+		                                    	<t t-if="line['credit'] != 0">
+		                                        	<span t-esc="line['credit']" t-options='{"widget": "float", "precision": 0}'/>
+		                                    	</t>
+		                                    </td>
+		                                    <td class="text-right" style="border: 1px solid black;">
+		                                    	<t t-if="line['balance'] != 0">
+		                                        	<span t-esc="line['balance']" t-options='{"widget": "float", "precision": 0}'/>
+		                                    	</t>
+		                                    </td>
+		                                </tr>
+		                            </t>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="oe_structure" />
+			</t>
+			</t>
 		</t>
 	</template>
 </odoo>

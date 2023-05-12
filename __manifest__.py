@@ -2,10 +2,10 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 {
-    'name': 'Innoving Solde Progressive',
+    'name': 'Innoving Grand Livre',
     'version': '1.0.0',
     'category': 'Invoicing Management',
-    'summary': 'Innoving Accounting Solde Progressive Reports',
+    'summary': 'Innoving Grand Livre',
     'sequence': '40',
     'author': 'Innoving',
     'company': 'Innoving',
@@ -17,12 +17,11 @@
     'demo': [],
     'data': [
         'security/ir.model.access.csv',
-        'wizards/innoving_solde_progressive.xml',
-        #'wizards/innoving_partner_ledger.xml',
-        #'wizards/innoving_account_ledger.xml',
-        #'reports/innoving_report.xml',
-        #'reports/innoving_report_partner_ledger.xml',
-        #'reports/innoving_report_account_ledger.xml',
+        'wizards/innoving_partner_ledger.xml',
+        'wizards/innoving_account_ledger.xml',
+        'reports/innoving_report.xml',
+        'reports/innoving_report_partner_ledger.xml',
+        'reports/innoving_report_account_ledger.xml',
     ],
     'installable': True,
     'application': False,

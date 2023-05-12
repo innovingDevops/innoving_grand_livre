@@ -2,8 +2,8 @@
 <odoo>
 
     <record id="account_innoving_report_partner_ledger_view" model="ir.ui.view">
-        <field name="name">Innoving Partner Ledger</field>
-        <field name="model">innoving.account.partner.ledger</field>
+        <field name="name">Grand livre des partnaires</field>
+        <field name="model">innoving.partner.ledger</field>
         <field name="arch" type="xml">
             <form>
 				<sheet>
@@ -31,10 +31,10 @@
         </field>
     </record>
 
-    <record id="action_innoving_account_partner_ledger_menu" model="ir.actions.act_window">
-        <field name="name">Innoving Partner Ledger</field>
+    <record id="action_innoving_partner_ledger_menu" model="ir.actions.act_window">
+        <field name="name">Grand livre des partnaires</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="res_model">innoving.account.partner.ledger</field>
+        <field name="res_model">innoving.partner.ledger</field>
         <field name="view_type">form</field>
         <field name="view_mode">form</field>
         <field name="view_id" ref="account_innoving_report_partner_ledger_view"/>
@@ -48,7 +48,7 @@
         name="Grand livre des partenaires"
         sequence="2"
         parent="accounting_pdf_reports.menu_finance_legal_statement"
-        action="action_innoving_account_partner_ledger_menu"
+        action="action_innoving_partner_ledger_menu"
         groups="account.group_account_user"
        />
 

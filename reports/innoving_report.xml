@@ -1,22 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <report
-            id="action_innoving_partner_ledger"
-            model="innoving.account.partner.ledger"
-            string="Innoving partner ledger"
-            report_type="qweb-pdf"
-            name="innoving_ledger.innoving_report_partner_ledger"
-            file="innoving_ledger.innoving_report_partner_ledger"
-            />
-            
-       <report
+    
+    <record id="paperformat_innoving_ledger_report" model="report.paperformat">
+		<field name="name">Grand livre </field>		
+		<field name="page_height">0</field>
+		<field name="page_width">0</field>
+		<field name="format">A4</field>
+		<field name="orientation">Portrait</field>
+		<field name="margin_top">5</field>
+		<field name="margin_bottom">5</field>
+		<field name="margin_left">5</field>
+		<field name="margin_right">5</field>
+		<field name="header_line" eval="False"/>
+		<field name="header_spacing">0</field>
+		<field name="dpi">110</field>
+	</record>
+	 	
+    <report
             id="action_innoving_account_ledger"
             model="innoving.account.ledger"
-            string="Innoving account ledger"
+            string="Grand livre des comptes"
             report_type="qweb-pdf"
-            name="innoving_ledger.innoving_report_account_ledger"
-            file="innoving_ledger.innoving_report_account_ledger"
-            />
+            name="innoving_grand_livre.innoving_report_account_ledger_p"
+            file="innoving_grand_livre.innoving_report_account_ledger_compte"
+            paperformat="innoving_grand_livre.paperformat_innoving_ledger_report"/>
+            
+    <report
+            id="action_innoving_partner_ledger"
+            model="innoving.partner.ledger"
+            string="Grand livre des partenaires"
+            report_type="qweb-pdf"
+            name="innoving_grand_livre.innoving_report_partner_ledger_p"
+            file="innoving_grand_livre.innoving_report_partner_ledger_compte"
+            paperformat="innoving_grand_livre.paperformat_innoving_ledger_report"/>
     </data>
 </odoo>

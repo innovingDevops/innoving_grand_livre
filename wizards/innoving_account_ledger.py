@@ -26,21 +26,24 @@ from odoo.tools.translate import html_translate
 
 class InnovingAccountLedger(models.TransientModel):
     _name = 'innoving.account.ledger'
-    _description = 'Innoving account ledger Report'
+    _description = 'Innoving account ledger'
 
 
     
     account_id = fields.Many2one('account.account', string='Compte')
+    account_code = fields.Char('Code')
+    account_name = fields.Char('Compte')
     periode_id = fields.Many2one('periode', string='Période')
     date_from = fields.Date('Date début')
     date_to = fields.Date('date fin')
     somme_credit = fields.Float(string='Somme credit')  
     somme_debit = fields.Float(string='Somme debit')
-    somme_balance = fields.Float(string='Somme balance')
+    solde_progressif = fields.Float(string='Solde pregressif')
     selon = fields.Selection(string="Selon", selection=[
         ('Date', 'Date'),
         ('Periode', 'Période')], default='Date')
-
+    journal_ids = fields.Many2many('account.journal', 'innoving_account_ledger_rel', 'account_id', 'journal_id', string='Journaux', default=[])
+    
     
     @api.onchange('periode_id')
     def onchange_periode_id(self):
@@ -59,6 +62,8 @@ class InnovingAccountLedger(models.TransientModel):
                 raise UserError(_('Attention, vérifier les dates !')) 
         return {}
     
+    
+    
     @api.multi
     def print_report(self):        
         domain = []
@@ -69,23 +74,26 @@ class InnovingAccountLedger(models.TransientModel):
         account_code = self.account_id.code
         somme_credit = 0.0
         somme_debit = 0.0
-        somme_balance = 0.0
-
+        solde_progressif = 0.0
+        journaux = [line.id for line in self.journal_ids]
+        somme = 0.0
+        
         if date_from:
             domain += [('date', '>=', date_from)]
         if date_to:
             domain += [('date', '<=', date_to)]
         if account_id:
             domain += [('account_id', '=', account_id)]
-            
+        if self.journal_ids:
+            domain += [('journal_id', 'in', journaux)]
         #payslips = self.env['hr.payslip'].search(domain)
-        payslips = self.env['account.move.line'].search_read(domain)
+        payslips = self.env['account.move.line'].search_read(domain, order='date asc')
         payslips_list =  []
         for payslip in payslips:
 
             somme_credit += payslip['credit']
             somme_debit += payslip['debit']
-            somme_balance += payslip['balance']
+            solde_progressif = somme + (payslip['debit'] - payslip['credit'])
 
             if payslip['partner_id'] == False:
                 partner = ""
@@ -96,10 +104,11 @@ class InnovingAccountLedger(models.TransientModel):
                 'account_name': account_name,
                 'account_code': account_code,
                 'date': payslip['date'],
-                'ref': payslip['ref'],
+                'piece': payslip['move_id'][1],
+                'name': payslip['name'],
                 'credit': payslip['credit'],
                 'debit': payslip['debit'],
-                'balance': payslip['balance'],
+                'balance': solde_progressif,
                 'partner_id': partner,
                 'account': payslip['account_id'][1],
                 'journal': payslip['journal_id'][1],
@@ -107,13 +116,16 @@ class InnovingAccountLedger(models.TransientModel):
             
             #raise UserError(_('%s') % (payslip['partner_id']))
             payslips_list.append(vals)
+            somme = solde_progressif
             #raise UserError(_('%s') % (payslip['analytic_account_id']))
+        self.account_code = account_code
+        self.account_name = account_name
         self.somme_credit = somme_credit
         self.somme_debit = somme_debit
-        self.somme_balance = somme_balance
+        self.somme_balance = solde_progressif
 
         data = {
             'form_data': self.read()[0],
             'payslips': payslips_list,
         }    
-        return self.env.ref('innoving_ledger.action_innoving_account_ledger').report_action(self, data=data)
+        return self.env.ref('innoving_grand_livre.action_innoving_account_ledger').report_action(self, data=data)
